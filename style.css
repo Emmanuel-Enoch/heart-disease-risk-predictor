@@ -3,16 +3,20 @@
 }
 
 body {
-  background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+  background: linear-gradient(35deg, #52e2f5, #f1f8e9);
   min-height: 100vh;
   display: flex;
+  flex-direction: column;  
+  margin: 0;
 }
+
 
 form {
   background: #ffffff;
   padding: 30px 20px;
   border-radius: 15px;
-  width: 100%;
+  width: 85%;
+  align-self: center;
 }
 
 h1 {
@@ -31,6 +35,7 @@ p {
   text-align: center;
   color: #000000;
   margin-top: 15px;
+  text-decoration: #00695c wavy underline;
 }
 
 form div {
@@ -40,14 +45,20 @@ form div {
 }
 
 label {
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #000000;
 }
 
 input[type="number"],
 input[type="text"] {
   padding: 10px;
   border-radius: 15px;
+  width: 60%;
+  align-self: center;
+}
+
+radio{
+
 }
 
 input[type="radio"] {
@@ -67,4 +78,5 @@ button {
   border-radius: 60px;
   font-size: 1.5rem;
   font-weight: 900;
+  align-self: center;
 }
