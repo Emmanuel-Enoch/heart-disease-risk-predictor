@@ -48,7 +48,6 @@ label {
   font-weight: 600;
   color: #000000;
 }
-
 input[type="number"],
 input[type="text"] {
   padding: 10px;
@@ -56,19 +55,12 @@ input[type="text"] {
   width: 60%;
   align-self: center;
 }
-
-radio{
-
+form div:has(input[type="radio"]) {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-
-input[type="radio"] {
-  margin-right: 6px;
-}
-
-div input[type="radio"] + label {
-  margin-right: 15px;
-}
-
 button {
   padding: 15px;
   width: 100%;
