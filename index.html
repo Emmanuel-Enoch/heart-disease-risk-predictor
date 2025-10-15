@@ -1,85 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Disease Risk Predictor</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heart Disease Risk Predictor</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Heart Disease Prediction</h1>
-    <h3>Welcome to our website</h3>
-    <p>Enter the following details</p>
-    <form>
-    <div>
-    <label for="Age">Age:</label>
-    <input type="number" id="age" name="age"> 
-    </div>
-   <div class="form-row">
-  <label>Sex:</label>
-  <div class="radio-group">
-    <label>
-      <input type="radio" name="Sex" value="Male">
-      Male
-    </label>
-    <label>
-      <input type="radio" name="Sex" value="Female">
-      Female
-    </label>
+
+<video autoplay muted loop id="bg-video">
+  <source src="videoplayback.mp4" type="video/mp4">
+</video>
+
+<form>
+  <h1>Heart Disease Prediction</h1>
+  <h3>Welcome to our website</h3>
+  <p>Enter the following details</p>
+
+  <div>
+    <label>Age:</label>
+    <input type="number" name="age">
   </div>
-</div>
-    <div>
-    <label for="Chest Pain Type">Chest Pain Type:</label>
-    <input type="text" id="CPT" name="CPT">
+
+  <div>
+    <label>Sex:</label>
+    <div class="radio-group">
+      <input type="radio" id="Male" name="Sex" value="Male">
+      <label for="Male">Male</label>
+      <input type="radio" id="Female" name="Sex" value="Female">
+      <label for="Female">Female</label>
     </div>
-    <div>
-    <label for="RBP">Resting Blood Pressure:</label>
-    <input type="number" id="RBP" name="RBP"> 
-    </div>
-    <div>
-    <label for="Cholesterol"> Serum Cholesterol:</label>
-   <input type="number" id="Cholesterol" name="Cholesterol">
-    </div>
-    <div>
-    <label for="FBS">Fasting Blood Sugar:</label>
-    <input type="number" id="FBS" name="FBS">
-    </div>
-    <div>
-    <label for="ECG" > Resting ECG Results:</label>
-   <input type="text" id="ECG" name="ECG">
-    </div>
-    <div>
-    <label for="MHR"> Maximum Heart Rate Achieved:</label>
-   <input type="number" id="MHR" name="MHR">
-    </div>
-    <div>
-  <label>Exercise Induced Angina:</label>
-  <div class="radio-group">
-    <input type="radio" id="Yes" name="EIA" value="Yes">
-    <label for="Yes">Yes</label>
-    <input type="radio" id="No" name="EIA" value="No">
-    <label for="No">No</label>
   </div>
-</div>
-    <div>
-    <label for="STD">ST Depression(oldpeak):</label>
-    <input type="number" id="STD" name="STD" step="0.1">
+
+  <div>
+    <label>Chest Pain Type:</label>
+    <input type="text" name="CPT">
+  </div>
+
+  <div>
+    <label>Resting Blood Pressure:</label>
+    <input type="number" name="RBP">
+  </div>
+
+  <div>
+    <label>Serum Cholesterol:</label>
+    <input type="number" name="Cholesterol">
+  </div>
+
+  <div>
+    <label>Fasting Blood Sugar:</label>
+    <input type="number" name="FBS">
+  </div>
+
+  <div>
+    <label>Resting ECG Results:</label>
+    <input type="text" name="ECG">
+  </div>
+
+  <div>
+    <label>Maximum Heart Rate Achieved:</label>
+    <input type="number" name="MHR">
+  </div>
+
+  <div>
+    <label>Exercise Induced Angina:</label>
+    <div class="radio-group">
+      <input type="radio" id="Yes" name="EIA" value="Yes">
+      <label for="Yes">Yes</label>
+      <input type="radio" id="No" name="EIA" value="No">
+      <label for="No">No</label>
     </div>
-    <div>
-    <label for="STS" >Slope of peak exercise ST Segment:</label>
-   <input type="number" id="STS" name="STS">
-    </div>
-    <div>
-        <label for="MVF" >Number of major vessels colored by fluoroscopy:</label>
-    <input type="number" id="MVF" name="MVF">
-    </div>
-    <div>
-    <label for="TT" >Thalassemia Type:</label>
-    <input type="text" id="TT" name="TT">
-    </div>
-    <div>
-        <button type="submit">Predict Risk</button>
-    </div>
-    </form>
+  </div>
+
+  <div>
+    <label>ST Depression (oldpeak):</label>
+    <input type="number" name="STD" step="0.1">
+  </div>
+
+  <div>
+    <label>Slope of peak exercise ST Segment:</label>
+    <input type="number" name="STS">
+  </div>
+
+  <div>
+    <label>Number of major vessels colored by fluoroscopy:</label>
+    <input type="number" name="MVF">
+  </div>
+
+  <div>
+    <label>Thalassemia Type:</label>
+    <input type="text" name="TT">
+  </div>
+
+  <div>
+    <button type="submit">Predict Risk</button>
+  </div>
+</form>
+
 </body>
 </html>
