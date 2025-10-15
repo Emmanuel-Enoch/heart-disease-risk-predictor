@@ -7,7 +7,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
-heart_data=read_csv("heart1.csv")
+heart_data=read_csv("D:\Theme Based Project\heart-disease-risk-predictor\heart1.csv")
 heart_data.head()
 # Create individual models
 model1 = LogisticRegression()
