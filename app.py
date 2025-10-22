@@ -102,3 +102,13 @@ plt.ylabel('Accuracy')
 plt.title('   \n Comparison of ML Model Accuracies')
 plt.ylim(0,150)
 plt.show()
+import pickle
+# Cell 7: Save the model as PKL
+with open('HEART-DISEASE-RISK-PREDICTOR.pkl', 'wb') as file:
+    pickle.dump(model, file)
+
+print("✅ Model saved as 'HEART-DISEASE-RISK-PREDICTOR.pkl'")
+
+# Cell 8: Test the saved model
+with open('HEART-DISEASE-RISK-PREDICTOR.pkl', 'rb') as file:
+    loaded_model = pickle.load(file)
