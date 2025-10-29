@@ -1,114 +1,83 @@
+from flask import Flask, render_template, request
 import numpy as np
-from pandas import *
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import VotingClassifier,RandomForestClassifier,GradientBoostingClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import accuracy_score
-heart_data=read_csv("D:\Theme Based Project\heart-disease-risk-predictor\heart1.csv")
-heart_data.head()
-# Create individual models
-model1 = LogisticRegression()
-model2 = RandomForestClassifier()
-model3 = GradientBoostingClassifier()
-voting_model = VotingClassifier(
-    estimators=[('lr', model1), ('rf', model2), ('gb', model3)],
-    voting='hard' )
-heart_data.tail()
-#no of rows and columns in dataset
-heart_data.shape
-#getting some info about data
-heart_data.info()
-#checking for missing values
-heart_data.isnull().sum()#statistical measure about the data
-heart_data.describe()
-#checking the distribution of target variable
-heart_data['target'].value_counts()
-X=heart_data.drop(columns='target',axis=1)
-Y=heart_data['target']
-print(X)
-print(Y)
-#splitting data into training and test data
-X_train,X_test,Y_train,Y_test = train_test_split(X,Y,test_size=0.2,stratify=Y,random_state=2)
-print(X.shape,X_train.shape,X_test.shape)
-voting_model.fit(X_train,Y_train)
-#tranning the logisticregression model
-model=LogisticRegression()
-model.fit(X_train,Y_train)#tranning the logisticregression model
-#accuracy on testing data
-X_test_prediction=model.predict(X_test)
-test_data_accuracy=accuracy_score(X_test_prediction,Y_test)
-print('accuracy on test data:',test_data_accuracy)
-# Accuracy on training data
-train_preds = voting_model.predict(X_train)
-train_accuracy = accuracy_score(train_preds,Y_train)# Accuracy on testing data
-print("Training Accuracy:", train_accuracy)
-accuracy_voting= train_accuracy
-accuracy1 = accuracy_voting* 100
-print("Accuracy1: {:.2f}%".format(accuracy1))
-test_preds = voting_model.predict(X_test)
-test_accuracy = accuracy_score(Y_test, test_preds)
-print("Testing Accuracy:", test_accuracy)
-#accuracy on training data
-X_train_prediction=model.predict(X_train)
-training_data_accuracy=accuracy_score(X_train_prediction,Y_train)
-print('accuracy on training data:',training_data_accuracy)
-accuracy_logistic=training_data_accuracy
-accuracy2 = accuracy_logistic * 100
-print("Accuracy: {:.2f}%".format(accuracy2))
-#building a predictive system
-
-input_data=input("enter age 	sex 	cp 	trestbps 	chol 	fbs 	restecg 	thalach 	exang 	oldpeak 	slope 	ca 	thal")
-input_data = [float(x) for x in input_data.split(',')]
-#changing the input data to numpy array
-input_data_as_numpy_array=np.asarray(input_data)
-#reshape the numpy arraya as we r predicting for only one instance
-input_data_reshaped=input_data_as_numpy_array.reshape(1,-1)
-prediction=model.predict(input_data_reshaped)
-print(prediction)
-if prediction[0]==0:
-    print('the person does not have heart disease')
-else:
-    print('the person has heart disease')
-features = [
-    'age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 
-    'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal'
-]
-# Create bar graph
-plt.figure(figsize=(10,6))
-plt.bar(features, input_data, color='skyblue', edgecolor='black')
-
-# Add labels and title
-plt.xlabel("Feature Names")
-plt.ylabel("Input Values")
-plt.title("Heart Disease Prediction - Input Feature Values")
-plt.xticks(rotation=45)
-plt.grid(axis='y', linestyle='--', alpha=0.6)
-
-
-
-plt.figure(figsize=(8,5))
-models = ['voting classifier','Logistic Regression']
-accuracies = [99.51,86.31]
-
-bars=plt.bar(models, accuracies, color=['lightblue', 'lightblue'])
-for bar in bars:
-    height = bar.get_height()
-    plt.text(bar.get_x() + bar.get_width()/2, height + 1, f'{height:.1f}%', ha='center', va='bottom')
-plt.xlabel('ML Models')
-plt.ylabel('Accuracy')
-plt.title('   \n Comparison of ML Model Accuracies')
-plt.ylim(0,150)
-plt.show()
+import pandas as pd
 import pickle
-# Cell 7: Save the model as PKL
-with open('HEART-DISEASE-RISK-PREDICTOR.pkl', 'wb') as file:
-    pickle.dump(model, file)
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+import os
 
-print("✅ Model saved as 'HEART-DISEASE-RISK-PREDICTOR.pkl'")
+app = Flask(__name__)
 
-# Cell 8: Test the saved model
-with open('HEART-DISEASE-RISK-PREDICTOR.pkl', 'rb') as file:
-    loaded_model = pickle.load(file)
+# ---------- Step 1 : Train and save model (only runs once if no model.pkl) ----------
+if not os.path.exists("model.pkl"):
+    print("🧠 Training model on preprocessed dataset...")
+    data = pd.read_csv("heart1.csv")
+
+    # Assuming 'target' column is the label
+    X = data.drop('target', axis=1)
+    y = data['target']
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X_train, y_train)
+
+    pickle.dump(model, open("model.pkl", "wb"))
+    print("✅ Model trained and saved as model.pkl")
+else:
+    print("✅ Found existing model.pkl — skipping retraining.")
+
+# ---------- Step 2 : Load trained model ----------
+model = pickle.load(open("model.pkl", "rb"))
+
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    try:
+        # Collect inputs from form
+        age = float(request.form['age'])
+        sex = 1 if request.form['Sex'] == 'Male' else 0
+        cpt = float(request.form['CPT'])
+        rbp = float(request.form['RBP'])
+        chol = float(request.form['Cholesterol'])
+        fbs = float(request.form['FBS'])
+        ecg = float(request.form['ECG'])
+        mhr = float(request.form['MHR'])
+        eia = 1 if request.form['EIA'] == 'Yes' else 0
+        std = float(request.form['STD'])
+        sts = float(request.form['STS'])
+        mvf = float(request.form['MVF'])
+        tt = float(request.form['TT'])
+
+        # Combine features into one array (match training order)
+        features = np.array([[age, sex, cpt, rbp, chol, fbs, ecg, mhr,
+                              eia, std, sts, mvf, tt]])
+
+        # Predict using the model
+        prediction = model.predict(features)[0]
+
+        # Convert numeric result to readable text
+        result = "High Risk \n u " if prediction == 1 else "Low Risk"
+
+        return render_template(
+            'index.html',
+            prediction_text=f"Heart Disease Risk: {result}"
+        )
+
+    except Exception as e:
+        return render_template(
+            'index.html',
+            prediction_text=f"Error: {str(e)}"
+        )
+
+
+if __name__ == '__main__':
+    print("🚀 Starting Flask development server...")
+    app.run(debug=True)
